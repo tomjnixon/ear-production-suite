@@ -32,7 +32,11 @@ void MainComponent::paint (Graphics& g)
 
     area.removeFromBottom(50); // version label space
     g.setFont (Font (16.0f).italicised());
-    g.drawText ("Drag & Drop REAPER project files (.RPP) here...", area, Justification::centred, true);
+    if(processing) {
+        g.drawText("Please wait. Processing...", area, Justification::centred, true);
+    } else {
+        g.drawText("Drag & Drop REAPER project files (.RPP) here...", area, Justification::centred, true);
+    }
 }
 
 void MainComponent::resized()
@@ -56,6 +60,9 @@ bool MainComponent::isInterestedInFileDrag(const StringArray & files)
 
 void MainComponent::filesDropped(const StringArray & files, int x, int y)
 {
+    processing = true;
+    repaint();
+
     int nonRpps = 0;
     int successCount = 0;
     int failCount = 0;
@@ -144,6 +151,9 @@ void MainComponent::filesDropped(const StringArray & files, int x, int y)
             msg += " files!";
         }
     }
+
+    processing = false;
+    repaint();
 
     NativeMessageBox::showMessageBox(failCount > 0? AlertWindow::AlertIconType::WarningIcon : AlertWindow::AlertIconType::InfoIcon, "Project Upgrade Results", msg, this);
 }

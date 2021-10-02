@@ -16,6 +16,7 @@ public:
 
 private:
     Label versionLabel;
+    bool processing{ false };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };
