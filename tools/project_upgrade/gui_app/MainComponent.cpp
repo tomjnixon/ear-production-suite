@@ -5,10 +5,9 @@
 #include <components/look_and_feel/colours.hpp>
 #include <components/look_and_feel/fonts.hpp>
 
-using namespace ear::plugin::ui;
-
 MainComponent::MainComponent()
 {
+    addAndMakeVisible(header);
     configureVersionLabel(versionLabel);
     addAndMakeVisible(versionLabel);
     setSize (600, 400);
@@ -24,9 +23,10 @@ void MainComponent::paint (Graphics& g)
     auto area = getLocalBounds();
 
     auto topHalf = area.removeFromTop(getHeight() / 2);
+    topHalf.removeFromTop(30); // margin
     g.setColour (EarColours::Heading);
-    g.setFont (EarFonts::Heading);
-    g.drawText ("EAR Production Suite - Project Upgrade Utility", topHalf.removeFromTop(topHalf.getHeight() / 2), Justification::centredBottom, true);
+    g.setFont (EarFonts::HeroHeading);
+    g.drawText ("Project Upgrade Utility", topHalf.removeFromTop(topHalf.getHeight() / 2), Justification::centredBottom, true);
     g.setColour (EarColours::Label);
     g.setFont (EarFonts::Label);
     topHalf.removeFromTop(10); // margin
@@ -44,6 +44,7 @@ void MainComponent::paint (Graphics& g)
 
 void MainComponent::resized()
 {
+    header.setBounds(getLocalBounds().removeFromTop(50));
     versionLabel.setBounds(getLocalBounds().removeFromBottom(30));
 }
 
