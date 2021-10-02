@@ -5,6 +5,7 @@
 #include <components/look_and_feel/colours.hpp>
 #include <components/look_and_feel/fonts.hpp>
 
+using namespace ear::plugin::ui;
 
 MainComponent::MainComponent()
 {
@@ -19,19 +20,21 @@ MainComponent::~MainComponent()
 
 void MainComponent::paint (Graphics& g)
 {
-    g.fillAll (Colour(18, 18, 18));
-    g.setColour (Colours::white);
+    g.fillAll (EarColours::Background);
     auto area = getLocalBounds();
 
     auto topHalf = area.removeFromTop(getHeight() / 2);
-    g.setFont (Font (16.0f).boldened());
+    g.setColour (EarColours::Heading);
+    g.setFont (EarFonts::Heading);
     g.drawText ("EAR Production Suite - Project Upgrade Utility", topHalf.removeFromTop(topHalf.getHeight() / 2), Justification::centredBottom, true);
-    g.setFont (Font (12.0f));
+    g.setColour (EarColours::Label);
+    g.setFont (EarFonts::Label);
     topHalf.removeFromTop(10); // margin
     g.drawText ("Updates REAPER projects to use the latest version of the EAR Production Suite", topHalf, Justification::centredTop, true);
 
     area.removeFromBottom(50); // version label space
-    g.setFont (Font (16.0f).italicised());
+    g.setColour (EarColours::Label);
+    g.setFont (EarFonts::Description.italicised());
     if(processing) {
         g.drawText("Please wait. Processing...", area, Justification::centred, true);
     } else {
