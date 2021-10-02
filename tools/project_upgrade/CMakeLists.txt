@@ -15,6 +15,20 @@ target_link_libraries(project_upgrade
         PRIVATE
         proj_upgrade)
 
+find_package(JUCE REQUIRED QUIET)
+add_executable(project_upgrade_gui WIN32)
+target_sources(project_upgrade_gui
+        PRIVATE
+        gui_app/Main.cpp
+        gui_app/MainComponent.cpp)
+set_target_properties(project_upgrade_gui PROPERTIES FOLDER tools)		
+target_link_libraries(project_upgrade_gui PRIVATE Juce::core)
+target_include_directories(project_upgrade_gui PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/gui_app)
+
+target_link_libraries(project_upgrade_gui
+        PRIVATE
+        proj_upgrade)
+
 if(BUILD_TESTING)
     add_executable(test_project_upgrade test_project_upgrade.cpp)
     target_sources(test_project_upgrade
