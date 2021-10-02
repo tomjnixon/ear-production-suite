@@ -1,9 +1,15 @@
 #include "MainComponent.h"
 #include "../upgrade.h"
 #include <fstream>
+#include <components/version_label.hpp>
+#include <components/look_and_feel/colours.hpp>
+#include <components/look_and_feel/fonts.hpp>
+
 
 MainComponent::MainComponent()
 {
+    configureVersionLabel(versionLabel);
+    addAndMakeVisible(versionLabel);
     setSize (600, 400);
 }
 
@@ -21,15 +27,17 @@ void MainComponent::paint (Graphics& g)
     g.setFont (Font (16.0f).boldened());
     g.drawText ("EAR Production Suite - Project Upgrade Utility", topHalf.removeFromTop(topHalf.getHeight() / 2), Justification::centredBottom, true);
     g.setFont (Font (12.0f));
-    topHalf.removeFromTop(10);
-    g.drawText ("Updates REAPER projects to use the latest version of the EAR Production Suite", topHalf, Justification::centredTop, false);
+    topHalf.removeFromTop(10); // margin
+    g.drawText ("Updates REAPER projects to use the latest version of the EAR Production Suite", topHalf, Justification::centredTop, true);
 
+    area.removeFromBottom(50); // version label space
     g.setFont (Font (16.0f).italicised());
     g.drawText ("Drag & Drop REAPER project files (.RPP) here...", area, Justification::centred, true);
 }
 
 void MainComponent::resized()
 {
+    versionLabel.setBounds(getLocalBounds().removeFromBottom(30));
 }
 
 bool MainComponent::isInterestedInFileDrag(const StringArray & files)

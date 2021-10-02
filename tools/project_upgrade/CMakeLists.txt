@@ -20,10 +20,11 @@ add_executable(project_upgrade_gui WIN32)
 target_sources(project_upgrade_gui
         PRIVATE
         gui_app/Main.cpp
-        gui_app/MainComponent.cpp)
+        gui_app/MainComponent.cpp
+		${EPS_SHARED_DIR}/binary_data.cpp)
 set_target_properties(project_upgrade_gui PROPERTIES FOLDER tools)		
-target_link_libraries(project_upgrade_gui PRIVATE Juce::core)
-target_include_directories(project_upgrade_gui PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/gui_app)
+target_link_libraries(project_upgrade_gui PRIVATE Juce::core ear-version)
+target_include_directories(project_upgrade_gui PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/gui_app ${EPS_SHARED_DIR})
 
 target_link_libraries(project_upgrade_gui
         PRIVATE
