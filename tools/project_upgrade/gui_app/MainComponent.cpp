@@ -71,6 +71,7 @@ void MainComponent::filesDropped(const StringArray & files, int x, int y)
     int successCount = 0;
     int failCount = 0;
     int nopCount = 0;
+    int changeCount = 0;
 
     for(auto& file : files) {
         if(file.endsWithIgnoreCase(".rpp") || file.endsWithIgnoreCase(".rpp-bak")) {
@@ -97,7 +98,7 @@ void MainComponent::filesDropped(const StringArray & files, int x, int y)
                 failCount++;
                 cleanupRequired = true;
             } else {
-                auto changeCount = upgrade::upgrade(ifs, ofs);
+                changeCount = upgrade::upgrade(ifs, ofs);
                 if(changeCount == 0) {
                     nopCount++;
                     cleanupRequired = true;
@@ -116,43 +117,58 @@ void MainComponent::filesDropped(const StringArray & files, int x, int y)
 
     }
 
+    juce::String msg;
 
-    auto msg = juce::String(successCount);
-    if(successCount == 0) {
-        msg += " files upgraded successfully.";
-    } else if(successCount == 1) {
-        msg += " file upgraded successfully\n     (saved with '-conv' appended to filename).";
+    if(files.size() == 1) {
+        if(successCount > 0) {
+            msg = "File upgraded successfully.\n";
+            msg += juce::String(changeCount);
+            msg += " changes made.\n     (saved with '-conv' appended to filename).";
+        } else if(nopCount > 0) {
+            msg = "File did not require upgrade.";
+        } else if(failCount > 0) {
+            msg = "File upgrade failed!";
+        }
+
     } else {
-        msg += " files upgraded successfully\n     (saved with '-conv' appended to filenames).";
-    }
+        msg = juce::String(successCount);
 
-    if(nopCount > 0) {
-        msg += "\n\n";
-        msg += juce::String(nopCount);
-        if(nopCount == 1) {
-            msg += " file did not require upgrade.";
+        if(successCount == 0) {
+            msg += " files upgraded successfully.";
+        } else if(successCount == 1) {
+            msg += " file upgraded successfully\n     (saved with '-conv' appended to filename).";
         } else {
-            msg += " files did not require upgrade.";
+            msg += " files upgraded successfully\n     (saved with '-conv' appended to filenames).";
         }
-    }
 
-    if(nonRpps > 0) {
-        msg += "\n\n";
-        msg += juce::String(nonRpps);
-        if(nonRpps == 1) {
-            msg += " file was not processed as it did not have a .RPP or .RPP-BAK extension.";
-        } else {
-            msg += " files were not processed as they did not have a .RPP or .RPP-BAK extension.";
+        if(nopCount > 0) {
+            msg += "\n\n";
+            msg += juce::String(nopCount);
+            if(nopCount == 1) {
+                msg += " file did not require upgrade.";
+            } else {
+                msg += " files did not require upgrade.";
+            }
         }
-    }
 
-    if(failCount > 0) {
-        msg += "\n\nUpgrade failed on ";
-        msg += juce::String(failCount);
-        if(failCount == 1) {
-            msg += " file!";
-        } else {
-            msg += " files!";
+        if(nonRpps > 0) {
+            msg += "\n\n";
+            msg += juce::String(nonRpps);
+            if(nonRpps == 1) {
+                msg += " file was not processed as it did not have a .RPP or .RPP-BAK extension.";
+            } else {
+                msg += " files were not processed as they did not have a .RPP or .RPP-BAK extension.";
+            }
+        }
+
+        if(failCount > 0) {
+            msg += "\n\nUpgrade failed on ";
+            msg += juce::String(failCount);
+            if(failCount == 1) {
+                msg += " file!";
+            } else {
+                msg += " files!";
+            }
         }
     }
 
