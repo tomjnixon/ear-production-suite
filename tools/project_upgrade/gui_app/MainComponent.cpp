@@ -50,16 +50,12 @@ void MainComponent::resized()
 
 bool MainComponent::isInterestedInFileDrag(const StringArray & files)
 {
-    bool validFileFound = false;
-
     for(auto& file : files) {
         if(file.endsWithIgnoreCase(".rpp") || file.endsWithIgnoreCase(".rpp-bak")) {
-            validFileFound = true;
-            break;
+            return true;
         }
     }
-
-    return validFileFound;
+    return false;
 }
 
 void MainComponent::filesDropped(const StringArray & files, int x, int y)
@@ -67,11 +63,11 @@ void MainComponent::filesDropped(const StringArray & files, int x, int y)
     processing = true;
     repaint();
 
-    int nonRpps = 0;
-    int successCount = 0;
-    int failCount = 0;
-    int nopCount = 0;
-    int changeCount = 0;
+    int nonRpps = 0;        // Count of files which dont have correct extension
+    int successCount = 0;   // Count of files successfully converted
+    int failCount = 0;      // Count of files failed conversion
+    int nopCount = 0;       // Count of files not requiring conversion
+    int changeCount = 0;    // Number of changes in the last successfully converted file
 
     for(auto& file : files) {
         if(file.endsWithIgnoreCase(".rpp") || file.endsWithIgnoreCase(".rpp-bak")) {
@@ -116,6 +112,8 @@ void MainComponent::filesDropped(const StringArray & files, int x, int y)
         }
 
     }
+
+    // --- Show Results ---
 
     juce::String msg;
 
@@ -175,5 +173,7 @@ void MainComponent::filesDropped(const StringArray & files, int x, int y)
     processing = false;
     repaint();
 
-    NativeMessageBox::showMessageBox(failCount > 0? AlertWindow::AlertIconType::WarningIcon : AlertWindow::AlertIconType::InfoIcon, "Project Upgrade Results", msg, this);
+    NativeMessageBox::showMessageBox(
+        failCount > 0? AlertWindow::AlertIconType::WarningIcon : AlertWindow::AlertIconType::InfoIcon,
+        "Project Upgrade Results", msg, this);
 }
