@@ -70,4 +70,8 @@ add_juce_vst3_plugin(direct_speakers
   
 target_link_libraries(direct_speakers_VST3 PRIVATE ear-plugin-base ear-version)
 
+get_property(PACKAGE_TARGETS_EARVST GLOBAL PROPERTY PACKAGE_TARGETS_EARVST)
+list(APPEND PACKAGE_TARGETS_EARVST direct_speakers_VST3)
+set_property(GLOBAL PROPERTY PACKAGE_TARGETS_EARVST "${PACKAGE_TARGETS_EARVST}")
+
 install_juce_vst3_plugin(direct_speakers "${EPS_PLUGIN_INSTALL_PREFIX}VST3/ear-production-suite")

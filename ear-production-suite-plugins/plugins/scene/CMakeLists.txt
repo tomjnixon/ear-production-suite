@@ -101,6 +101,11 @@ add_juce_vst3_plugin(scene
   OUTPUT_NAME "EAR Scene")
   
 target_link_libraries(scene_VST3 PRIVATE ear-plugin-base ear-version)
+
+get_property(PACKAGE_TARGETS_EARVST GLOBAL PROPERTY PACKAGE_TARGETS_EARVST)
+list(APPEND PACKAGE_TARGETS_EARVST scene_VST3)
+set_property(GLOBAL PROPERTY PACKAGE_TARGETS_EARVST "${PACKAGE_TARGETS_EARVST}")
+
 install_juce_vst3_plugin(scene "${EPS_PLUGIN_INSTALL_PREFIX}VST3/ear-production-suite")
 
 

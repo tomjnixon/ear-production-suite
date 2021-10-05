@@ -74,4 +74,9 @@ add_juce_vst3_plugin(object
   
 target_include_directories(object_VST3 PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(object_VST3 PRIVATE ear-plugin-base ear-version)
+
+get_property(PACKAGE_TARGETS_EARVST GLOBAL PROPERTY PACKAGE_TARGETS_EARVST)
+list(APPEND PACKAGE_TARGETS_EARVST object_VST3)
+set_property(GLOBAL PROPERTY PACKAGE_TARGETS_EARVST "${PACKAGE_TARGETS_EARVST}")
+
 install_juce_vst3_plugin(object "${EPS_PLUGIN_INSTALL_PREFIX}VST3/ear-production-suite")

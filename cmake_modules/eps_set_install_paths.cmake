@@ -1,4 +1,6 @@
 function(eps_set_install_paths)
+set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install CACHE PATH " " FORCE)
+
 if(WIN32)
     file(TO_CMAKE_PATH "$ENV{programfiles}" PROG_FILES)
     file(TO_CMAKE_PATH "$ENV{appdata}" APPDATA)
