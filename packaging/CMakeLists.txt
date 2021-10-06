@@ -19,6 +19,11 @@ foreach(tgt ${PACKAGE_TARGETS_REAPEREXT})
 			$<TARGET_FILE:${tgt}>
 			DESTINATION
 			Extension/UserPlugins)
+		get_target_property(EXT_SOURCE_DIR ${tgt} SOURCE_DIR)
+		install(DIRECTORY 
+			${EXT_SOURCE_DIR}/ADMPresets 
+			DESTINATION
+			Extension/UserPlugins)
 	endif()
 endforeach()
 foreach(tgt ${PACKAGE_TARGETS_OTHERVST})
