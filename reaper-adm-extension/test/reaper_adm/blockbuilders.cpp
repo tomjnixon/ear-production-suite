@@ -86,7 +86,7 @@ admplug::testing::SphericalCoordBlock admplug::testing::SphericalCoordBlock::wit
 admplug::testing::SphericalCoordBlock admplug::testing::SphericalCoordBlock::withGain(double linearGain)
 {
     SphericalCoordBlock builder{*this};
-    builder.block.set(adm::Gain{static_cast<float>(linearGain)});
+    builder.block.set(adm::Gain::fromLinear(linearGain));
     return builder;
 }
 
