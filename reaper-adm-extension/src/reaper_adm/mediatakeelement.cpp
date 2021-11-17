@@ -14,7 +14,7 @@ using std::chrono::nanoseconds;
 namespace {
 template<typename T>
 double toSeconds(T property) {
-    return property.get().count() / 1000000000.0;
+    return property.get().asNanoseconds().count() / 1000000000.0;
 }
 }
 

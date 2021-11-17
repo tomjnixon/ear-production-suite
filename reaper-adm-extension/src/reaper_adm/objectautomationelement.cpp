@@ -104,7 +104,7 @@ namespace {
         return adm::isEnabled(jp);
     }
 
-    std::chrono::nanoseconds getInterpolationLength(adm::AudioBlockFormatObjects const &block){
+    adm::Time getInterpolationLength(adm::AudioBlockFormatObjects const &block){
         if(block.has<adm::JumpPosition>() && isJumpPositionEnabled(block)){
             auto jumpPosition = block.get<adm::JumpPosition>();
             return jumpPosition.has<adm::InterpolationLength>() ?
@@ -117,7 +117,7 @@ namespace {
     using namespace std::chrono_literals;
 
     adm::AudioBlockFormatObjects getJumpPositionEndBlock(adm::AudioBlockFormatObjects block,
-                                                         std::chrono::nanoseconds interpolationLength) {
+                                                         adm::Time interpolationLength) {
         auto rTime = block.get<adm::Rtime>().get();
         if(rTime != 0ns) {
             block.set(adm::Rtime(rTime + interpolationLength));
@@ -129,7 +129,7 @@ namespace {
 
     std::vector<AutomationPoint> getJumpPositionPoints(adm::AudioBlockFormatObjects const block,
                                                        Parameter const& parameter,
-                                                       std::chrono::nanoseconds interpolationLength) {
+                                                       adm::Time interpolationLength) {
         assert(interpolationLength >= 0ns);
         std::vector<AutomationPoint> jumpPositionPoints;
 

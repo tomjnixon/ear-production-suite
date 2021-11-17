@@ -75,8 +75,8 @@ namespace admplug::testing {
 
    private:
        template<typename T, typename U>
-       auto getValOrDefault(U parent) -> typename T::value_type {
-           typename T::value_type val{0};
+       adm::Time getValOrDefault(U parent) {
+           adm::Time val(std::chrono::nanoseconds::zero());
            if(parent.template has<T>()) {
                val = parent.template get<T>().get();
            }
